@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pioneras Ocultas</title>
+    <style>
+        /* --- Reseteo Básico y Estilos Globales --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #121212;
+            color: #f0f0f0;
+            line-height: 1.6;
+        }
+
+        /* --- Estructura de "Páginas" --- */
+        /* Ocultamos todas las secciones de página */
+        .page-container > section {
+            display: none;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Mostramos la página de inicio (#home) por defecto */
+        .page-container > section#home {
+            display: block;
+        }
+
+        /* Mostramos la página que está siendo apuntada por la URL (ej: #perfil-fei-fei) */
+        .page-container > section:target {
+            display: block;
+        }
+
+        /* --- Estilos de la Página de Inicio (#home) --- */
+        #home .header {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        #home h1 {
+            font-size: 2.5rem;
+            color: #bb86fc; /* Morado "tech" */
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        #home .subheader {
+            font-size: 1.1rem;
+            color: #b0b0b0;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .card-container {
+            display: grid;
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .profile-card {
+            background-color: #1e1e1e;
+            border-radius: 16px;
+            overflow: hidden;
+            text-decoration: none;
+            color: #f0f0f0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(187, 134, 252, 0.3);
+        }
+
+        .profile-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            object-position: top; /* Ajusta la posición de la foto */
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-content h3 {
+            font-size: 1.5rem;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .card-content p {
+            font-size: 1rem;
+            color: #bb86fc;
+        }
+
+        /* --- Estilos de Páginas de Perfil --- */
+        .profile-page {
+            padding-bottom: 80px; /* Espacio para el botón de volver */
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #bb86fc;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .profile-hero {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #bb86fc;
+            margin-bottom: 15px;
+        }
+
+        .profile-hero h2 {
+            font-size: 2rem;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .profile-hero .profile-bio {
+            font-size: 1.1rem;
+            color: #b0b0b0;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .info-section {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .info-section h4 {
+            font-size: 1.2rem;
+            color: #bb86fc;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-section p, .info-section li {
+            font-size: 1rem;
+            color: #f0f0f0;
+            margin-bottom: 10px;
+        }
+        
+        .info-section li {
+            list-style-position: inside;
+        }
+
+        /* --- Sección de Cierre (CTA) --- */
+        .cta-section {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .cta-section h3 {
+            color: #bb86fc;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .cta-section p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .cta-button {
+            display: block;
+            background-color: #bb86fc;
+            color: #121212;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 10px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .cta-button:hover {
+            background-color: #a361fc;
+        }
+        
+        .cta-button.secondary {
+            background-color: transparent;
+            color: #bb86fc;
+            border: 2px solid #bb86fc;
+        }
+        
+        .cta-button.secondary:hover {
+            background-color: rgba(187, 134, 252, 0.1);
+        }
+
+        /* --- Responsividad para Tablets/Desktop --- */
+        @media (min-width: 768px) {
+            .page-container > section {
+                max-width: 900px;
+                margin: auto;
+            }
+
+            .card-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-container">
+
+        <section id="home">
+            <div class="header">
+                <h1>Women Who Tech - Heroínas que inspiran</h1>
+                <img src="imgs/resume mmtics.png" alt="resumen mmtics" style="width:300px; margin-top:20px; margin-bottom:20px;">
+                <p class="subheader">La tecnología que usas hoy fue construida 
+                    por ellas. Toca un perfil para descubrir su historia.</p>
+            </div>
+
+            <div class="card-container">
+                <a href="#perfil-fei-fei" class="profile-card">
+                    <img src="imgs/fei fei li index.jpeg" alt="Retrato de Fei-Fei Li">
+                    <div class="card-content">
+                        <h3>Fei-Fei Li</h3>
+                        <p>La Arquitecta de la Visión de IA</p>
+                    </div>
+                </a>
+
+                <a href="#perfil-monica" class="profile-card">
+                    <img src="imgs/monica retamal index.jpg" alt="Retrato de Mónica Retamal">
+                    <div class="card-content">
+                        <h3>Mónica Retamal</h3>
+                        <p>La Impulsora del Talento Digital en LATAM</p>
+                    </div>
+                </a>
+                <a href="#perfil-parisa" class="profile-card">
+                    <img src="imgs/parisa tabriz index.png" alt="Retrato de Parisa Tabriz">
+                    <div class="card-content">
+                        <h3>Parisa Tabriz</h3>
+                        <p>La "Security Princess" de Google</p>
+                    </div>
+                </a>
+                <a href="#perfil-radia" class="profile-card">
+                    <img src="imgs/radia perlman index.jpg" alt="Retrato de Radia Perlman">
+                    <div class="card-content">
+                        <h3>Radia Perlman</h3>
+                        <p>La "Madre de Internet"</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section id="perfil-fei-fei" class="profile-page">
+            <a href="#home" class="back-link">← Volver al Salón</a>
+
+            <div class="profile-hero">
+                <img src="imgs/fei fei li profile.webp" alt="Retrato de Fei-Fei Li" class="profile-img">
+                <h2>Fei-Fei Li</h2>
+                <p class="profile-bio">Profesora de Ciencias de la Computación en Stanford, 
+                    Co-Directora de HAI, ex Jefa Científica de Google Cloud. La mujer que le enseñó 
+                    a "ver" a las computadoras.</p>
+            </div>
+
+            <div class="info-section">
+                <h4>🧠 Su Gran Hazaña: ImageNet</h4>
+                <p>Es reconocida mundialmente por haber creado <strong>ImageNet</strong>, 
+                    un conjunto de datos masivo que revolucionó el campo del *deep learning* 
+                    y la visión por computador.</p>
+            </div>
+
+            <div class="info-section">
+                <h4>🛡️ La Barrera que Rompió</h4>
+                <p>Enfrentó la **falta de diversidad y representación femenina** 
+                en el ámbito tecnológico.</p>
+                <p>Su respuesta fue co-fundar <strong>AI4ALL</strong>, una iniciativa que promueve
+                la inclusión y la educación en IA para jóvenes de diversos contextos.</p>
+            </div>
+
+            <div class="info-section">
+                <h4>🌍 Su Impacto Hoy</h4>
+                <p>Fei-Fei Li es un símbolo de la IA ética y responsable. Impulsa el concepto de una
+                <strong>Inteligencia Artificial centrada en las personas</strong>.</p>
+            </div>
+            
+            <div class="cta-section">
+                <h3>¿Te inspiraste?</h3>
+                <p>El futuro del sector depende de fortalecer la educación digital 
+                con enfoque de género.</p>
+                <a href="https://ai-4-all.org/" target="_blank" rel="noopener noreferrer" class="cta-button">Conoce más sobre AI4ALL</a>
+                <a href="#home" class="cta-button secondary">Ver más pioneras</a>
+            </div>
+        </section>
+        
+        <section id="perfil-monica" class="profile-page">
+            <a href="#home" class="back-link">← Volver al Salón</a>
+
+            <div class="profile-hero">
+                <img src="imgs/monica retamal profile.jpg" alt="Retrato de Mónica Retamal" class="profile-img">
+                <h2>Mónica Retamal</h2>
+                <p class="profile-bio">Emprendedora tecnológica y Directora Ejecutiva de la <strong>Fundación Kodea</strong>, 
+                dedicada a impulsar habilidades digitales y reducir la brecha de género en Chile y Latinoamérica.</p>
+            </div>
+
+            <div class="info-section">
+                <h4>🚀 Su Gran Hazaña: Educación Digital</h4>
+                <p>Ha liderado la promoción para incorporar las Ciencias de la Computación 
+                y los <strong>Lenguajes Digitales en las escuelas</strong> chilenas.</p>
+                <ul>
+                    <li>Fomenta la participación de niñas y jóvenes en carreras STEM.</li>
+                    <li>Impulsa programas de reconversión laboral para mujeres.</li>
+                </ul>
+            </div>
+
+            <div class="info-section">
+                <h4>🚧 La Barrera que Rompió</h4>
+                <p>Ha combatido activamente la <strong>brecha digital y de género</strong> en el acceso a la tecnología y habilidades digitales.</p>
+                <p>Su estrategia ha sido generar <strong>alianzas público-privadas</strong> para ampliar las oportunidades de formación y 
+                cerrar estas brechas.</p>
+            </div>
+
+            <div class="info-section">
+                <h4>💡 Su Impacto Hoy</h4>
+                <p>Su trabajo es fundamental para <strong>formar capital humano digital</strong> y 
+                visibilizar el rol femenino en la transformación tecnológica nacional.</p>
+            </div>
+            
+            <div class="cta-section">
+                <h3>¿Te inspiraste?</h3>
+                <p>La inclusión femenina en las TICs no solo es justicia social, es un motor para el progreso.</p>
+                <a href="https://kodea.org/" target="_blank" rel="noopener noreferrer" class="cta-button">Descubre Fundación Kodea</a>
+                <a href="#home" class="cta-button secondary">Ver más pioneras</a>
+            </div>
+        </section>
+
+        <section id="perfil-parisa" class="profile-page">
+            <a href="#home" class="back-link">← Volver al Salón</a>
+
+            <div class="profile-hero">
+                <img src="imgs/parisa tabriz index.png" alt="Retrato de Parisa Tabriz" class="profile-img">
+                <h2>Parisa Tabriz</h2>
+                <p class="profile-bio">Es una ingeniera en ciberseguridad estadounidense, 
+                    conocida mundialmente como la <strong>“Security Princess”</strong> de Google debido a su liderazgo y 
+                    enfoque único en la protección del navegador Chrome.</p>
+            </div>
+
+            <div class="info-section">
+                <h4>🚀 Su Gran Hazaña: Educación Digital</h4>
+                <p>Ha liderado los esfuerzos de mayor seguridad del navegador Chrome, 
+                    <strong>protegiendo a miles de millones de usuarios</strong> en todo el mundo.</p>
+                <ul>
+                    <li>Fomenta la participación de niñas y jóvenes en carreras TICS.</li>
+    
+                </ul>
+            </div>
+
+            <div class="info-section">
+                <h4>🚧 La Barrera que Rompió</h4>
+                <p>Ha demostrado que la Ciberseguridad no es un club exclusivo para hombres, 
+                    <strong>impulsando la participación femenina</strong> en tecnologías críticas.</p>
+            </div>
+
+            <div class="info-section">
+                <h4>💡 Su Impacto Hoy</h4>
+                <p><strong>Continúa defendiendo una Internet más segura</strong>, liderando iniciativas innovadoras en Google y
+                    promoviendo la diversidad en equipos de seguridad a nivel global.</p>
+            </div>
+            
+            <div class="cta-section">
+                <h3>¿Te inspiraste?</h3>
+                <p>La inclusión femenina en las TICs no solo es justicia social, es un motor para el progreso.</p>
+                <a href="https://security.googleblog.com/" target="_blank" rel="noopener noreferrer" class="cta-button">Conoce el equipo de Seguridad de Google</a>
+                <a href="#home" class="cta-button secondary">Ver más pioneras</a>
+            </div>
+        </section>
+
+        <section id="perfil-radia" class="profile-page">
+            <a href="#home" class="back-link">← Volver al Salón</a>
+
+            <div class="profile-hero">
+                <img src="imgs/radia perlman profile.jpg" alt="Retrato de Radia Perlman" class="profile-img">
+                <h2>Radia Perlman</h2>
+                <p class="profile-bio">Es una <strong>ingeniera en redes y criptografía</strong>, reconocida como la “Madre de Internet” 
+                    gracias a su diseño innovador del protocolo Spanning Tree Protocol (STP), fundamental para el funcionamiento de redes modernas</p>
+            </div>
+
+            <div class="info-section">
+                <h4>🚀 Su Gran Hazaña: Educación Digital</h4>
+                <p>Diseñó STP, una solución que evita bucles en redes y permitió la expansión global de Internet. 
+                    Su trabajo sentó las bases de cómo se comunican los dispositivos a gran escala</p>
+            </div>
+
+            <div class="info-section">
+                <h4>🚧 La Barrera que Rompió</h4>
+                <p>Se impuso en un campo altamente dominado por hombres, demostrando que <strong>la Arquitectura de Internet</strong> también tiene rostro femenino.</p>
+            </div>
+
+            <div class="info-section">
+                <h4>💡 Su Impacto Hoy</h4>
+                <p>Continúa trabajando en <strong>protocolos de seguridad y educación tecnológica</strong>, 
+                    inspirando a futuras generaciones de ingenieras de redes a innovar sin límites.</p>
+            </div>
+            
+            <div class="cta-section">
+                <h3>¿Te inspiraste?</h3>
+                <p>Internet también tiene una mujer en su origen</p>
+                <a href="https://en.wikipedia.org/wiki/Spanning_Tree_Protocol" target="_blank" rel="noopener noreferrer" 
+                class="cta-button">STP (Wikipedia)</a>
+                <a href="#home" class="cta-button secondary">Ver más pioneras</a>
+            </div>
+        </section>
+        <footer id="pie de pag" class="footer">
+            <p class="small" style="text-align: center; padding: 20px; color: #888;"> 
+      Diseño y desarrollo: Prototipo HTML / CSS / JS.<br/>
+      Desarrollado por <strong>Felipe Lara</strong>.
+        </footer>
+    </div>
+</body>
+</html>
